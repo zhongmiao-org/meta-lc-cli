@@ -1,0 +1,26 @@
+{
+  "appId": "demo-app",
+  "pages": [
+    {
+      "id": "orders-page",
+      "title": "Orders",
+      "route": "/orders",
+      "resources": [
+        "orders-query",
+        "orders-mutation"
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "id": "orders-query",
+      "method": "query",
+      "endpoint": "/query"
+    },
+    {
+      "id": "orders-mutation",
+      "method": "mutation",
+      "endpoint": "/mutation"
+    }
+  ]
+}

@@ -46,6 +46,12 @@ npx meta-lc validate --file ./app.dsl.json --json
 
 # 输出人类可读摘要
 npx meta-lc explain --file ./app.dsl.json
+
+# 生成 Pipeline 计划（默认仅写 plan.json）
+npx meta-lc generate --file ./app.dsl.json --out demo
+
+# 写出四类产物（DB/API/Perm/Page）
+npx meta-lc generate --file ./app.dsl.json --out demo --write
 ```
 
 ## 参考
