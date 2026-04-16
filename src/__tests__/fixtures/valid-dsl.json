@@ -1,0 +1,20 @@
+{
+  "version": "app-dsl.v1",
+  "app": {
+    "id": "demo-app",
+    "name": "Demo App",
+    "version": "0.1.0"
+  },
+  "tenants": [
+    { "id": "tenant-a", "name": "Tenant A" }
+  ],
+  "roles": [
+    { "id": "manager", "name": "Manager", "scopes": ["DEPT_AND_CHILDREN"] }
+  ],
+  "resources": [
+    { "id": "orders-query", "name": "Orders Query", "method": "query", "endpoint": "/query" }
+  ],
+  "pages": [
+    { "id": "orders-page", "title": "Orders", "route": "/orders", "resources": ["orders-query"] }
+  ]
+}

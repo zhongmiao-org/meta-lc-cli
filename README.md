@@ -28,10 +28,27 @@ App generator and tooling CLI for App DSL validation and scaffold pipeline outpu
 
 after cloning this repo:
 
+```bash
+npm install
+npm run build
+```
 
 
 after adding implementation packages:
 
+```bash
+# generate a minimal valid DSL template
+npx meta-lc init --out ./app.dsl.json
+
+# validate DSL (returns exit code 1 on failure)
+npx meta-lc validate --file ./app.dsl.json
+
+# machine-readable output
+npx meta-lc validate --file ./app.dsl.json --json
+
+# human-readable summary + validation result
+npx meta-lc explain --file ./app.dsl.json
+```
 
 
 ## References

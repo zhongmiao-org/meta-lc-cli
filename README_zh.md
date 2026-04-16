@@ -27,9 +27,26 @@
 ## 快速开始
 克隆后：
 
+```bash
+npm install
+npm run build
+```
 
 后续接入实现包后：
 
+```bash
+# 生成最小可校验 DSL 模板
+npx meta-lc init --out ./app.dsl.json
+
+# 校验 DSL（失败返回 exit code 1）
+npx meta-lc validate --file ./app.dsl.json
+
+# 输出结构化结果
+npx meta-lc validate --file ./app.dsl.json --json
+
+# 输出人类可读摘要
+npx meta-lc explain --file ./app.dsl.json
+```
 
 ## 参考
 - 统一文档仓库：[lowcode-docs](https://github.com/zhongmiao-org/lowcode-docs)
