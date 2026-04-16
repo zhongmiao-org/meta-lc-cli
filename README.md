@@ -60,6 +60,12 @@ npx meta-lc template --file ./app.dsl.json --out demo
 
 # generate and write tenant/role template file
 npx meta-lc template --file ./app.dsl.json --out demo --write
+
+# run strict E2E gate (validate + generate + template + BFF checks)
+npx meta-lc e2e --file ./app.dsl.json --out demo --bff-url http://localhost:6000
+
+# machine-readable E2E report output
+npx meta-lc e2e --file ./app.dsl.json --out demo --json
 ```
 
 

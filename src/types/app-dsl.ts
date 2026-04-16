@@ -72,6 +72,8 @@ export interface CommandOutput {
   plan?: GenerationPlanV1;
   artifacts?: GenerationArtifactResult[];
   template?: TemplateGenerationReport;
+  checks?: E2eCheckResult[];
+  reportPath?: string;
 }
 
 export type GenerationArtifactType = 'db' | 'api' | 'perm' | 'page';
@@ -124,4 +126,34 @@ export interface TemplateGenerationReport {
   written: boolean;
   usedFallbackTenants: boolean;
   usedFallbackRoles: boolean;
+}
+
+export interface E2eOptions {
+  bffUrl: string;
+  tenantA: string;
+  tenantB: string;
+  userId: string;
+  tenantBUserId: string;
+  roles: string[];
+}
+
+export interface E2eCheckResult {
+  step: string;
+  ok: boolean;
+  pathOrEndpoint: string;
+  requestId?: string;
+  message: string;
+  suggestion?: string;
+}
+
+export interface E2eReportV1 {
+  version: "e2e-report.v1";
+  appId: string;
+  generatedAt: string;
+  options: E2eOptions;
+  checks: E2eCheckResult[];
+  artifacts: {
+    planPath: string;
+    templatePath: string;
+  };
 }

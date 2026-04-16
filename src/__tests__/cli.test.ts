@@ -105,3 +105,36 @@ test('template previews by default and writes on --write', () => {
   assert.equal(writeResult.status, 0);
   assert.equal(existsSync(previewPath), true);
 });
+
+test('e2e returns exit code 1 when bff health fails', () => {
+  const workspace = mkdtempSync(join(tmpdir(), 'meta-lc-cli-'));
+  const out = join(workspace, 'app.dsl.json');
+  const outDir = `test-e2e-failure-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const initResult = run(['init', '--out', out]);
+  assert.equal(initResult.status, 0);
+
+  const e2eResult = run([
+    'e2e',
+    '--file',
+    out,
+    '--out',
+    outDir,
+    '--bff-url',
+    'http://127.0.0.1:1',
+    '--json'
+  ]);
+
+  assert.equal(e2eResult.status, 1);
+  const output = JSON.parse(e2eResult.stdout);
+  assert.equal(output.ok, false);
+  assert.ok(Array.isArray(output.errors));
+});
+
+test('e2e fails fast on invalid dsl', () => {
+  const invalidPath = join(fixturesDir, 'invalid-dsl.json');
+  const e2eResult = run(['e2e', '--file', invalidPath, '--json']);
+  assert.equal(e2eResult.status, 1);
+  const output = JSON.parse(e2eResult.stdout);
+  assert.equal(output.ok, false);
+  assert.ok(Array.isArray(output.errors));
+});

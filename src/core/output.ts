@@ -64,4 +64,22 @@ export function printOutput(output: CommandOutput, jsonMode: boolean): void {
     console.log(`- fallback tenants: ${output.template.usedFallbackTenants}`);
     console.log(`- fallback roles: ${output.template.usedFallbackRoles}`);
   }
+
+  if (output.checks && output.checks.length > 0) {
+    console.log('Checks:');
+    for (const check of output.checks) {
+      console.log(`- ${check.step}: ok=${check.ok} endpoint=${check.pathOrEndpoint}`);
+      console.log(`  message: ${check.message}`);
+      if (check.requestId) {
+        console.log(`  request-id: ${check.requestId}`);
+      }
+      if (check.suggestion) {
+        console.log(`  suggestion: ${check.suggestion}`);
+      }
+    }
+  }
+
+  if (output.reportPath) {
+    console.log(`Report: ${output.reportPath}`);
+  }
 }
