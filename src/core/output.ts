@@ -41,4 +41,19 @@ export function printOutput(output: CommandOutput, jsonMode: boolean): void {
       console.log(`  - ${role.roleId}: ${role.scopeCount} scopes`);
     }
   }
+
+  if (output.plan) {
+    console.log('Plan:');
+    console.log(`- version: ${output.plan.version}`);
+    console.log(`- appId: ${output.plan.appId}`);
+    console.log(`- generatedAt: ${output.plan.generatedAt}`);
+    console.log(`- outputs: ${output.plan.outputs.length}`);
+  }
+
+  if (output.artifacts && output.artifacts.length > 0) {
+    console.log('Artifacts:');
+    for (const artifact of output.artifacts) {
+      console.log(`- ${artifact.type}: ${artifact.relativePath} (written=${artifact.written})`);
+    }
+  }
 }

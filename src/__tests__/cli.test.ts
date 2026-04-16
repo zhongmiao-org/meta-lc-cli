@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -49,5 +49,40 @@ test('explain returns stable summary and bad json errors', () => {
   writeFileSync(badPath, '{bad-json', 'utf-8');
   const badResult = run(['validate', '--file', badPath]);
   assert.equal(badResult.status, 1);
-  assert.ok(readFileSync(badPath, 'utf-8').includes('bad-json'));
+  assert.ok(badResult.stderr.length > 0 || badResult.stdout.length > 0);
+});
+
+test('generate writes only plan by default', () => {
+  const workspace = mkdtempSync(join(tmpdir(), 'meta-lc-cli-'));
+  const out = join(workspace, 'app.dsl.json');
+  const initResult = run(['init', '--out', out]);
+  assert.equal(initResult.status, 0);
+
+  const generateResult = run(['generate', '--file', out, '--out', 'test-default', '--json']);
+  assert.equal(generateResult.status, 0);
+  const output = JSON.parse(generateResult.stdout);
+  assert.equal(output.ok, true);
+  assert.equal(output.plan.version, 'generation-plan.v1');
+  assert.equal(Array.isArray(output.artifacts), true);
+
+  const outRoot = resolve(process.cwd(), 'out', 'test-default', 'demo-app');
+  assert.equal(existsSync(join(outRoot, 'plan.json')), true);
+  assert.equal(existsSync(join(outRoot, 'db', 'up.sql')), false);
+});
+
+test('generate with --write outputs DB/API/Perm/Page files', () => {
+  const workspace = mkdtempSync(join(tmpdir(), 'meta-lc-cli-'));
+  const out = join(workspace, 'app.dsl.json');
+  const initResult = run(['init', '--out', out]);
+  assert.equal(initResult.status, 0);
+
+  const generateResult = run(['generate', '--file', out, '--out', 'test-write', '--write', '--json']);
+  assert.equal(generateResult.status, 0);
+  const output = JSON.parse(generateResult.stdout);
+  assert.equal(output.ok, true);
+  const outRoot = resolve(process.cwd(), 'out', 'test-write', 'demo-app');
+  assert.equal(existsSync(join(outRoot, 'db', 'up.sql')), true);
+  assert.equal(existsSync(join(outRoot, 'api', 'openapi.json')), true);
+  assert.equal(existsSync(join(outRoot, 'perm', 'permission.json')), true);
+  assert.equal(existsSync(join(outRoot, 'page', 'page.dsl.json')), true);
 });

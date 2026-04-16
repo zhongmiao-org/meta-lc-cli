@@ -48,6 +48,12 @@ npx meta-lc validate --file ./app.dsl.json --json
 
 # human-readable summary + validation result
 npx meta-lc explain --file ./app.dsl.json
+
+# generate pipeline plan (writes plan.json by default)
+npx meta-lc generate --file ./app.dsl.json --out demo
+
+# generate and write DB/API/Perm/Page artifacts
+npx meta-lc generate --file ./app.dsl.json --out demo --write
 ```
 
 

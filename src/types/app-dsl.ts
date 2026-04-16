@@ -69,4 +69,33 @@ export interface CommandOutput {
   errors: ValidationIssue[];
   warnings: string[];
   summary?: ExplainSummary;
+  plan?: GenerationPlanV1;
+  artifacts?: GenerationArtifactResult[];
+}
+
+export type GenerationArtifactType = 'db' | 'api' | 'perm' | 'page';
+
+export interface GenerationArtifact {
+  type: GenerationArtifactType;
+  relativePath: string;
+  contentType: 'text' | 'json';
+  content: string | Record<string, unknown>;
+}
+
+export interface GenerationArtifactResult {
+  type: GenerationArtifactType;
+  relativePath: string;
+  written: boolean;
+}
+
+export interface GenerationPlanV1 {
+  version: 'generation-plan.v1';
+  appId: string;
+  dslVersion: AppDslV1['version'];
+  inputHash: string;
+  generatedAt: string;
+  outputs: Array<{
+    type: GenerationArtifactType;
+    relativePath: string;
+  }>;
 }
