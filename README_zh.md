@@ -58,6 +58,12 @@ npx meta-lc template --file ./app.dsl.json --out demo
 
 # 写出租户/角色模板文件
 npx meta-lc template --file ./app.dsl.json --out demo --write
+
+# 执行严格 E2E gate（validate + generate + template + BFF 联调）
+npx meta-lc e2e --file ./app.dsl.json --out demo --bff-url http://localhost:6000
+
+# 输出机器可解析 E2E 结果
+npx meta-lc e2e --file ./app.dsl.json --out demo --json
 ```
 
 ## 参考
