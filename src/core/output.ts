@@ -56,4 +56,12 @@ export function printOutput(output: CommandOutput, jsonMode: boolean): void {
       console.log(`- ${artifact.type}: ${artifact.relativePath} (written=${artifact.written})`);
     }
   }
+
+  if (output.template) {
+    console.log('Template:');
+    console.log(`- path: ${output.template.relativePath}`);
+    console.log(`- written: ${output.template.written}`);
+    console.log(`- fallback tenants: ${output.template.usedFallbackTenants}`);
+    console.log(`- fallback roles: ${output.template.usedFallbackRoles}`);
+  }
 }
