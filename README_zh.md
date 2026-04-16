@@ -52,6 +52,12 @@ npx meta-lc generate --file ./app.dsl.json --out demo
 
 # 写出四类产物（DB/API/Perm/Page）
 npx meta-lc generate --file ./app.dsl.json --out demo --write
+
+# 生成租户/角色模板（默认预览）
+npx meta-lc template --file ./app.dsl.json --out demo
+
+# 写出租户/角色模板文件
+npx meta-lc template --file ./app.dsl.json --out demo --write
 ```
 
 ## 参考

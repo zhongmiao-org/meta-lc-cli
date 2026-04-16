@@ -3,6 +3,7 @@ import { Command } from 'commander';
 import { runExplain } from './commands/explain';
 import { runGenerate } from './commands/generate';
 import { runInit } from './commands/init';
+import { runTemplate } from './commands/template';
 import { runValidate } from './commands/validate';
 
 async function main(): Promise<void> {
@@ -27,6 +28,22 @@ async function main(): Promise<void> {
     .option('--out <dir>', 'Sub directory under ./out')
     .action(async (options: { file: string; json?: boolean; write?: boolean; out?: string }) => {
       process.exitCode = await runGenerate({
+        file: options.file,
+        jsonMode: Boolean(options.json),
+        write: Boolean(options.write),
+        out: options.out
+      });
+    });
+
+  program
+    .command('template')
+    .description('Generate tenant/role template from App DSL')
+    .requiredOption('--file <path>', 'DSL JSON file path')
+    .option('--json', 'JSON output mode', false)
+    .option('--write', 'Write template file to out directory', false)
+    .option('--out <dir>', 'Sub directory under ./out')
+    .action(async (options: { file: string; json?: boolean; write?: boolean; out?: string }) => {
+      process.exitCode = await runTemplate({
         file: options.file,
         jsonMode: Boolean(options.json),
         write: Boolean(options.write),

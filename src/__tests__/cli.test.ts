@@ -86,3 +86,22 @@ test('generate with --write outputs DB/API/Perm/Page files', () => {
   assert.equal(existsSync(join(outRoot, 'perm', 'permission.json')), true);
   assert.equal(existsSync(join(outRoot, 'page', 'page.dsl.json')), true);
 });
+
+test('template previews by default and writes on --write', () => {
+  const workspace = mkdtempSync(join(tmpdir(), 'meta-lc-cli-'));
+  const out = join(workspace, 'app.dsl.json');
+  const outDir = `test-template-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const initResult = run(['init', '--out', out]);
+  assert.equal(initResult.status, 0);
+
+  const previewResult = run(['template', '--file', out, '--out', outDir, '--json']);
+  assert.equal(previewResult.status, 0);
+  const previewOutput = JSON.parse(previewResult.stdout);
+  assert.equal(previewOutput.ok, true);
+  const previewPath = resolve(process.cwd(), 'out', outDir, 'demo-app', 'template', 'tenant-role-template.json');
+  assert.equal(existsSync(previewPath), false);
+
+  const writeResult = run(['template', '--file', out, '--out', outDir, '--write', '--json']);
+  assert.equal(writeResult.status, 0);
+  assert.equal(existsSync(previewPath), true);
+});

@@ -71,6 +71,7 @@ export interface CommandOutput {
   summary?: ExplainSummary;
   plan?: GenerationPlanV1;
   artifacts?: GenerationArtifactResult[];
+  template?: TemplateGenerationReport;
 }
 
 export type GenerationArtifactType = 'db' | 'api' | 'perm' | 'page';
@@ -98,4 +99,29 @@ export interface GenerationPlanV1 {
     type: GenerationArtifactType;
     relativePath: string;
   }>;
+}
+
+export interface TenantRoleBinding {
+  tenantId: string;
+  defaultRoles: string[];
+}
+
+export interface TenantRoleTemplateV1 {
+  version: 'tenant-role-template.v1';
+  appId: string;
+  generatedAt: string;
+  tenants: AppDslTenantV1[];
+  roles: AppDslRoleV1[];
+  bindings: TenantRoleBinding[];
+  defaults: {
+    defaultTenantId: string;
+    defaultRoleIds: string[];
+  };
+}
+
+export interface TemplateGenerationReport {
+  relativePath: string;
+  written: boolean;
+  usedFallbackTenants: boolean;
+  usedFallbackRoles: boolean;
 }

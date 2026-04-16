@@ -54,6 +54,12 @@ npx meta-lc generate --file ./app.dsl.json --out demo
 
 # generate and write DB/API/Perm/Page artifacts
 npx meta-lc generate --file ./app.dsl.json --out demo --write
+
+# generate tenant/role template (preview by default)
+npx meta-lc template --file ./app.dsl.json --out demo
+
+# generate and write tenant/role template file
+npx meta-lc template --file ./app.dsl.json --out demo --write
 ```
 
 
